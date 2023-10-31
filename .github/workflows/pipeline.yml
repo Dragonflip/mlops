@@ -16,7 +16,7 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::843412435203:role/github.to.aws.oicd
+          role-to-assume: arn:aws:iam::843412435203:role/github.aws.oicd
           aws-region: ${{ env.AWS_REGION }}
       # Upload a file to AWS s3
       - name: install python
