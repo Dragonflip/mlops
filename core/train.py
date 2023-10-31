@@ -30,24 +30,25 @@ query.run(query_string=query_string,
 query.wait()
 dataset = query.as_dataframe()
 
-X=dataset[['sepal_length', 'sepal_width', 'petal_length', 'petal_width']]
-y=dataset[['target_name']]
-X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.5, shuffle=True,random_state=100)
-
-model=SVC(C=1, kernel='rbf', tol=0.001)
-model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
-print(y_pred)
-
 model_name = "teste-svm"
+url = os.environ.get('MLFLOW_TRACKING_URI') or ''
+mlflow.set_tracking_uri(url)
+mlflow.sklearn.autolog()
+
 with mlflow.start_run() as run:
-    url = os.environ.get('MLFLOW_TRACKING_URI') or ''
-    mlflow.set_tracking_uri(url)
+    X=dataset[['sepal_length', 'sepal_width', 'petal_length', 'petal_width']]
+    y=dataset[['target_name']]
+    X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.5, shuffle=True,random_state=100)
+
+    model=SVC(C=1, kernel='rbf', tol=0.001)
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
     signature = infer_signature(X_test, y_pred)
 
     mlflow.sklearn.log_model(
         sk_model=model,
         artifact_path="sklearn-model",
         signature=signature,
+        stage="Production"
         registered_model_name="teste-svm",
     )
