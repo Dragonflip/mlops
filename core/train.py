@@ -49,6 +49,5 @@ with mlflow.start_run() as run:
         sk_model=model,
         artifact_path="sklearn-model",
         signature=signature,
-        stage="Production",
         registered_model_name="teste-svm",
     )
