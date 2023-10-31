@@ -3,6 +3,7 @@ on:
   push
 env:
   AWS_REGION : "us-east-1"
+  MLFLOW_TRACKING_URI: "ec2-34-201-153-3.compute-1.amazonaws.com:5000"
 # permission can be added at job level or workflow level    
 permissions:
   id-token: write   # This is required for requesting the JWT

@@ -2,6 +2,8 @@ from sagemaker.feature_store.feature_group import FeatureGroup
 from sagemaker.session import Session
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
+import mlflow
+from mlflow.models.signature import infer_signature
 import os
 
 prefix = 'sagemaker-featurestore-introduction'
@@ -36,3 +38,16 @@ model=SVC(C=1, kernel='rbf', tol=0.001)
 model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 print(y_pred)
+
+model_name = "teste-svm"
+with mlflow.start_run() as run:
+    url = os.environ.get('MLFLOW_TRACKING_URI') or ''
+    mlflow.set_tracking_uri(url)
+    signature = infer_signature(X_test, y_pred)
+
+    mlflow.sklearn.log_model(
+        sk_model=model,
+        artifact_path="sklearn-model",
+        signature=signature,
+        registered_model_name="teste-svm",
+    )
