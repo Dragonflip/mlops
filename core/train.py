@@ -33,6 +33,7 @@ dataset = query.as_dataframe()
 model_name = "teste-svm"
 url = os.environ.get('MLFLOW_TRACKING_URI') or ''
 mlflow.set_tracking_uri(url)
+mlflow.set_experiment("meu_experimento")
 mlflow.sklearn.autolog()
 
 with mlflow.start_run() as run:
