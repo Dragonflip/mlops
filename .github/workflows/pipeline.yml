@@ -1,0 +1,34 @@
+name: AWS example workflow
+on:
+  push
+env:
+  AWS_REGION : "us-east-1"
+# permission can be added at job level or workflow level    
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+jobs:
+  S3PackageUpload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::843412435203:role/github.to.aws.oicd
+          aws-region: ${{ env.AWS_REGION }}
+      # Upload a file to AWS s3
+      - name: install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.1'
+            
+      - name: install poetry
+        run: pip install poetry
+
+      - name: install dependencies
+        run: poetry install
+
+      - name: run code
+        run: poetry run python core/train.py 
