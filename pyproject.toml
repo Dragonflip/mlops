@@ -6,7 +6,7 @@ authors = ["Dragonflip <jpmarquesdeoliveira@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 pandas = "^2.1.0"
 boto3 = "^1.28.52"
 sagemaker = "^2.125.0"
